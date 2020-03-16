@@ -10,3 +10,4 @@ dependencies:
   - pyarrow=0.13.0
   - pylint=2.4.4
   - python=3.7.6
+  - scipy=1.4.1
