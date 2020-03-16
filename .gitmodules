@@ -1,0 +1,3 @@
+[submodule "CSSEGISandData--COVID-19"]
+	path = CSSEGISandData--COVID-19
+	url = https://mstubna@github.com/CSSEGISandData/COVID-19
