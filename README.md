@@ -10,8 +10,6 @@ Data from https://github.com/CSSEGISandData/COVID-19
 1. If necessary, install [conda or miniconda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 2. Clone the repo
 3. From a terminal shell, run `conda env create --file environment.yml`, then `conda activate cms-ai`
-4. Create a `data\raw` folder and move the unencrypted CMS data to it.
-5. Some of the data processing scripts are written in javascript, so make sure you have npm and node ≥ 12 installed. Then run `npm` from the main folder to install the dependencies.
 
 ## Updating dependencies
 
