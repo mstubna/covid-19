@@ -115,7 +115,7 @@ def fit_to_sigmoid (df, offset, all_dates):
     lambda x, A, slope: sigmoid(x, A, slope, offset),
     dates,
     df['count'],
-    p0=[ 80000, -5],
+    p0=[80000, -5],
     bounds=(
       [-np.inf, -np.inf],
       [np.inf, -0.01]
