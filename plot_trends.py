@@ -20,13 +20,16 @@ colors = {
   'light_purple': '#d88aff',
   'light_green': '#b4ec70',
   'light_yellow': '#fff27e',
+  'light_red': '#ff7482',
+  'light_cyan': '#84ffff'
 }
 start_date = np.datetime64('2020-01-22')
 all_dates = [start_date + np.timedelta64(x, 'D') for x in range(0, 100)]
 should_print = True
 
-data = pd.read_csv(dirname / 'CSSEGISandData--COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
+#%% load data and filter to countries of interest
 
+# converts a country's data into a time series
 def convert_to_ts (data, country):
   df = pd.DataFrame(data[data['Country/Region'] == country].reset_index().sum(
     axis=0, numeric_only=True
@@ -35,10 +38,7 @@ def convert_to_ts (data, country):
   df['date'] = df['date'].astype('datetime64[ns]')
   return df
 
-country_names = ['China', 'Italy', 'Iran', 'Korea, South', 'Spain', 'France', 'Germany', 'US']
-countries = { key: convert_to_ts(data, key) for key in country_names}
-
-#%% figure 1
+data = pd.read_csv(dirname / 'CSSEGISandData--COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
 dat = [
   { 'name': 'China', 'color': 'light_gray' },
   { 'name': 'Korea, South', 'color': 'medium_gray' },
@@ -47,8 +47,11 @@ dat = [
   { 'name': 'Spain', 'color': 'light_purple' },
   { 'name': 'Germany', 'color': 'light_green' },
   { 'name': 'France', 'color': 'light_yellow' },
+  { 'name': 'United Kingdom', 'color': 'light_red' },
+  { 'name': 'Switzerland', 'color': 'light_cyan' },
   { 'name': 'US', 'color': 'orange' },
 ]
+countries = { d['name']: convert_to_ts(data, d['name']) for d in dat}
 
 #%% compute offset for each country that best fits onset of epidemic (i.e., first 7 days)
 def comparison_to_china_penalty (df, offset):
@@ -121,7 +124,6 @@ def fit_to_sigmoid (df, offset, all_dates):
   )
   return sigmoid((all_dates - start_date) / np.timedelta64(1, 'D'), *p, offset), p
 
-#%% Plots the data
 fig = plt.figure(figsize=(12, 6))
 ax = fig.add_subplot(111)
 
