@@ -134,12 +134,13 @@ for d in dat:
   print(country_name, *p, offset)
 
 #%% plot summary table
+china_slope = dat[0]['p'][1]
 table_data = []
 for d in dat:
   country_name, offset, p = itemgetter('name', 'offset', 'p')(d)
   # name, days behind china, growth rate, max infected
   table_data.append(
-    [country_name, f'{offset}', f'{(-1 * p[1]):.1f}', f'{p[0]:,.0f}']
+    [country_name, '' if country_name == 'China' else f'{offset}', f'{(china_slope/p[1]):.1f}', f'{p[0]:,.0f}']
   )
 
 fig = plt.figure(figsize=(12, 6))
@@ -156,11 +157,10 @@ ax.spines['bottom'].set_visible(False)
 table = plt.table(
   cellText=table_data,
   edges='B',
-  colLabels=['Country', 'Days behind China', 'Estimated max. growth rate', 'Estimated max. infected'],
+  colLabels=['Country', 'Days behind China', 'Estimated growth rate\n(compared to China)', 'Estimated max. infected'],
   bbox=[0, 0, 1, 1],
 )
 table.auto_set_font_size(False)
-# table.set_fontsize('large')
 for index, cell in enumerate(table.get_children()):
   if index < len(table.get_children()) - 4:
     cell.set_edgecolor(colors['light_gray'])
@@ -193,7 +193,7 @@ for d in dat:
   )
 
 # plots the now line
-y_max = 200000
+y_max = 150000
 now = np.datetime64('now').astype('datetime64[D]') - np.timedelta64(1, 'D')
 plt.vlines(now, ymin=0, ymax=y_max, colors=colors['very_light_gray'], linestyles='dashed')
 plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='right', va='top')
