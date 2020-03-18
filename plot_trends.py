@@ -73,6 +73,7 @@ def find_optimal_offset (df):
 
 for d in dat:
   d['offset'] = find_optimal_offset(countries[d['name']])
+dat.sort(key=lambda x: x['offset'])
 print(np.array(dat))
 
 #%% plot the initial epidemic onsets for each country adjusted by their onset offsets
@@ -105,7 +106,7 @@ if should_print:
 
 plt.show()
 
-#%% plot growth curves
+#%% compute model estimated growth curves
 def sigmoid (x, A, slope, offset):
   return A / (1 + np.exp ((x - (offset + 17.75)) / slope))
 
@@ -124,15 +125,59 @@ def fit_to_sigmoid (df, offset, all_dates):
   )
   return sigmoid((all_dates - start_date) / np.timedelta64(1, 'D'), *p, offset), p
 
-fig = plt.figure(figsize=(12, 6))
-ax = fig.add_subplot(111)
-
 for d in dat:
   country_name, offset, color_key = itemgetter('name', 'offset', 'color')(d)
   country = countries[country_name]
   fit, p = fit_to_sigmoid(country, offset, all_dates)
+  d['fit'] = fit
+  d['p'] = p
   print(country_name, *p, offset)
 
+#%% plot summary table
+table_data = []
+for d in dat:
+  country_name, offset, p = itemgetter('name', 'offset', 'p')(d)
+  # name, days behind china, growth rate, max infected
+  table_data.append(
+    [country_name, f'{offset}', f'{(-1 * p[1]):.1f}', f'{p[0]:,.0f}']
+  )
+
+fig = plt.figure(figsize=(12, 6))
+ax = fig.add_subplot(111)
+plt.xlim((0, 1))
+plt.ylim((0, 1))
+plt.xticks([])
+plt.yticks([])
+ax.spines['left'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+
+table = plt.table(
+  cellText=table_data,
+  edges='B',
+  colLabels=['Country', 'Days behind China', 'Estimated max. growth rate', 'Estimated max. infected'],
+  bbox=[0, 0, 1, 1],
+)
+table.auto_set_font_size(False)
+# table.set_fontsize('large')
+for index, cell in enumerate(table.get_children()):
+  if index < len(table.get_children()) - 4:
+    cell.set_edgecolor(colors['light_gray'])
+
+if should_print:
+  plt.savefig(dirname / f'figures/summary_table.png', bbox_inches='tight', dpi=300, format='png')
+
+plt.show()
+
+
+#%% plot growth curves
+fig = plt.figure(figsize=(12, 6))
+ax = fig.add_subplot(111)
+
+for d in dat:
+  country_name, color_key, fit = itemgetter('name', 'color', 'fit')(d)
+  country = countries[country_name]
   ax.plot(
     country['date'],
     country['count'],
