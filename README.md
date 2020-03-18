@@ -1,12 +1,18 @@
 # COVID-19 analysis
 
+Growth rate of confirmed infections 
 ![Growth rate](figures/growth_rate.png)
-Growth rate of confirmed infections (as of 3/16/2020)
 
+Model estimates of growth over time of confirmed infections
 ![Growth estimations](figures/growth_estimations.png)
-Model estimates of growth over time of confirmed infections (as of 3/16/2020)
 
-Data from https://github.com/CSSEGISandData/COVID-19
+Summary by country
+![Summary table](figures/summary_table.png)
+
+**Notes**
+
+- Data is from <https://github.com/CSSEGISandData/COVID-19>
+- Last updated on 3/17/2020
 
 ## Initial project setup
 
