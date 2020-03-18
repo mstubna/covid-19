@@ -200,10 +200,16 @@ plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='righ
 plt.annotate('Estimated', xy=(now + np.timedelta64(1, 'D'), y_max - 5000), ha='left', va='top')
 
 plt.xlabel('Date')
+ticks = [np.datetime64('2020-02-01') + np.timedelta64(7 * x, 'D') for x in range(0, 15)]
+label_from_tick = lambda tick: pd.to_datetime(tick).strftime('%b %d')
+tick_labels = list(map(label_from_tick, ticks))
+plt.xticks(ticks, tick_labels, rotation=20, horizontalalignment='right')
 
 plt.ylim((0, y_max))
 ax.set_yticklabels(['0' if x == 0 else '{:.0f}k'.format(int(x) / 1000) for x in ax.get_yticks().tolist()])
 plt.ylabel('Confirmed infections')
+
+plt.grid(color=colors['very_light_gray'])
 
 plt.legend(title='Countries', loc='lower right')
 
