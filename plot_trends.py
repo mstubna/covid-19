@@ -135,13 +135,18 @@ for d in dat:
 
 #%% plot summary table
 china_slope = dat[0]['p'][1]
+growth_rate_relative_to_china = lambda p: china_slope/p[1]
+
 table_data = []
 for d in dat:
   country_name, offset, p = itemgetter('name', 'offset', 'p')(d)
-  # name, days behind china, growth rate, max infected
-  table_data.append(
-    [country_name, '' if country_name == 'China' else f'{offset}', f'{(china_slope/p[1]):.1f}', f'{p[0]:,.0f}']
-  )
+  # name, days behind china, relative growth rate, max infected
+  table_data.append([
+    country_name, 
+    '' if country_name == 'China' else f'{offset}',
+    f'{growth_rate_relative_to_china(p):.1f}',
+    f'{p[0]:,.0f}'
+  ])
 
 fig = plt.figure(figsize=(12, 6))
 ax = fig.add_subplot(111)
