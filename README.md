@@ -12,7 +12,7 @@ Summary by country
 **Notes**
 
 - Data is from <https://github.com/CSSEGISandData/COVID-19>
-- Last updated on 3/17/2020
+- Last updated on 3/20/2020
 
 ## Initial project setup
 
