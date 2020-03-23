@@ -95,7 +95,7 @@ plt.xticks([np.datetime64('2020-01-22') + np.timedelta64(d, 'D') for d in range(
 ax.set_xticklabels(range(0, 15))
 plt.xlabel('Days since onset for each Country')
 
-plt.ylim((0, 30000))
+plt.ylim((0, 40000))
 ax.set_yticklabels(['0' if x == 0 else '{:.0f}k'.format(int(x) / 1000) for x in ax.get_yticks().tolist()])
 plt.ylabel('Confirmed infections')
 
