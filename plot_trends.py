@@ -38,7 +38,7 @@ def convert_to_ts (data, country):
   df['date'] = df['date'].astype('datetime64[ns]')
   return df
 
-data = pd.read_csv(dirname / 'CSSEGISandData--COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv')
+data = pd.read_csv(dirname / 'CSSEGISandData--COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
 dat = [
   { 'name': 'China', 'color': 'light_gray' },
   { 'name': 'Korea, South', 'color': 'medium_gray' },
@@ -91,15 +91,15 @@ for d in dat:
   )
 
 plt.xlim((np.datetime64('2020-01-22'), np.datetime64('2020-02-22')))
-plt.xticks([np.datetime64('2020-01-22') + np.timedelta64(d, 'D') for d in range(0, 15)])
-ax.set_xticklabels(range(0, 15))
+plt.xticks([np.datetime64('2020-01-22') + np.timedelta64(d, 'D') for d in range(0, 30)])
+ax.set_xticklabels(range(0, 30))
 plt.xlabel('Days since onset for each Country')
 
-plt.ylim((0, 40000))
+plt.ylim((0, 80000))
 ax.set_yticklabels(['0' if x == 0 else '{:.0f}k'.format(int(x) / 1000) for x in ax.get_yticks().tolist()])
 plt.ylabel('Confirmed infections')
 
-plt.legend(title='Countries', loc='lower right')
+plt.legend(title='Countries', loc='upper left')
 
 if should_print:
   plt.savefig(dirname / f'figures/growth_rate.png', bbox_inches='tight', dpi=300, format='png')
