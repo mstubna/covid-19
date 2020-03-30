@@ -91,10 +91,11 @@ for d in dat:
   )
 
 plt.xlim((np.datetime64('2020-01-22'), np.datetime64('2020-02-22')))
-plt.xticks([np.datetime64('2020-01-22') + np.timedelta64(d, 'D') for d in range(0, 30)])
-ax.set_xticklabels(range(0, 30))
+plt.xticks([np.datetime64('2020-01-22') + np.timedelta64(d, 'D') for d in range(0, 31)])
+ax.set_xticklabels(range(0, 31))
 plt.xlabel('Days since onset for each Country')
 
+plt.ylim(bottom=0)
 ax.set_yticklabels(['0' if x == 0 else '{:.0f}k'.format(int(x) / 1000) for x in ax.get_yticks().tolist()])
 plt.ylabel('Confirmed infections')
 
@@ -197,13 +198,12 @@ for d in dat:
   )
 
 # plots the now line
-y_max = 200000
+y_max = 250000
 now = np.datetime64('now').astype('datetime64[D]') - np.timedelta64(1, 'D')
 plt.vlines(now, ymin=0, ymax=y_max, colors=colors['very_light_gray'], linestyles='dashed')
 plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='right', va='top')
 plt.annotate('Estimated', xy=(now + np.timedelta64(1, 'D'), y_max - 5000), ha='left', va='top')
 
-plt.xlabel('Date')
 ticks = [np.datetime64('2020-02-01') + np.timedelta64(7 * x, 'D') for x in range(0, 15)]
 label_from_tick = lambda tick: pd.to_datetime(tick).strftime('%b %d')
 tick_labels = list(map(label_from_tick, ticks))
