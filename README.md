@@ -1,9 +1,9 @@
 # COVID-19 analysis
 
-Growth rate of confirmed infections 
+Confirmed infections over time
 ![Growth rate](figures/growth_rate.png)
 
-Model estimates of growth over time of confirmed infections
+Model estimates of confirmed infections over time
 ![Growth estimations](figures/growth_estimations.png)
 
 Summary by country
@@ -12,7 +12,10 @@ Summary by country
 **Notes**
 
 - Data is from <https://github.com/CSSEGISandData/COVID-19>
-- Last updated on 3/20/2020
+- Model predictions are based on the best-fit sigmoidal model for each country:
+    <img src="https://render.githubusercontent.com/render/math?math=%5Cfrac%7BA%7D%7B(1%20%2B%20Bt)e%5E%7B%5Calpha(t%20-%20t_0)%7D%7D">
+
+    where <img src="https://render.githubusercontent.com/render/math?math=A%2C%20B%2C%20%5Calpha%2C%20t_0"> are fit from the existing data.
 
 ## Initial project setup
 

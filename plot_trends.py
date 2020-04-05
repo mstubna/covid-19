@@ -107,21 +107,21 @@ if should_print:
 plt.show()
 
 #%% compute model estimated growth curves
-def sigmoid (x, A, slope, offset):
-  return A / (1 + np.exp ((x - (offset + 17.75)) / slope))
+def sigmoid (x, A, B, slope, offset):
+  return A / (1 + (1 + B * x) * np.exp ((x - (offset + 17.75)) / slope))
 
 def fit_to_sigmoid (df, offset, all_dates):
   dates = (df['date'] - start_date) / np.timedelta64(1, 'D')
   p, _ = curve_fit(
-    lambda x, A, slope: sigmoid(x, A, slope, offset),
+    lambda x, A, B, slope: sigmoid(x, A, B, slope, offset),
     dates,
     df['count'],
-    p0=[80000, -5],
+    p0=[80000, 0.01, -5],
     bounds=(
-      [-np.inf, -np.inf],
-      [np.inf, -0.01]
+      [-np.inf, 0, -np.inf],
+      [np.inf, 1, -0.01]
     ),
-    maxfev=5000,
+    maxfev=5000
   )
   return sigmoid((all_dates - start_date) / np.timedelta64(1, 'D'), *p, offset), p
 
@@ -134,8 +134,8 @@ for d in dat:
   print(country_name, *p, offset)
 
 #%% plot summary table
-china_slope = dat[0]['p'][1]
-growth_rate_relative_to_china = lambda p: china_slope/p[1]
+china_slope = dat[0]['p'][2]
+growth_rate_relative_to_china = lambda p: china_slope/p[2]
 
 table_data = []
 for d in dat:
@@ -198,7 +198,7 @@ for d in dat:
   )
 
 # plots the now line
-y_max = 250000
+y_max = 500000
 now = np.datetime64('now').astype('datetime64[D]') - np.timedelta64(1, 'D')
 plt.vlines(now, ymin=0, ymax=y_max, colors=colors['very_light_gray'], linestyles='dashed')
 plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='right', va='top')
@@ -215,7 +215,7 @@ plt.ylabel('Confirmed infections')
 
 plt.grid(color=colors['very_light_gray'])
 
-plt.legend(title='Countries', loc='lower right')
+plt.legend(title='Countries', loc='upper left')
 
 if should_print:
   plt.savefig(dirname / f'figures/growth_estimations.png', bbox_inches='tight', dpi=300, format='png')
