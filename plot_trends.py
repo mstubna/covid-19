@@ -198,7 +198,7 @@ for d in dat:
   )
 
 # plots the now line
-y_max = 500000
+y_max = 550000
 now = np.datetime64('now').astype('datetime64[D]') - np.timedelta64(1, 'D')
 plt.vlines(now, ymin=0, ymax=y_max, colors=colors['very_light_gray'], linestyles='dashed')
 plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='right', va='top')
