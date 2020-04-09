@@ -198,11 +198,11 @@ for d in dat:
   )
 
 # plots the now line
-y_max = 550000
+_, y_max = ax.get_ylim()
 now = np.datetime64('now').astype('datetime64[D]') - np.timedelta64(1, 'D')
 plt.vlines(now, ymin=0, ymax=y_max, colors=colors['very_light_gray'], linestyles='dashed')
-plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 5000), ha='right', va='top')
-plt.annotate('Estimated', xy=(now + np.timedelta64(1, 'D'), y_max - 5000), ha='left', va='top')
+plt.annotate('Actual', xy=(now - np.timedelta64(1, 'D'), y_max - 10000), ha='right', va='top')
+plt.annotate('Estimated', xy=(now + np.timedelta64(1, 'D'), y_max - 10000), ha='left', va='top')
 
 ticks = [np.datetime64('2020-02-01') + np.timedelta64(7 * x, 'D') for x in range(0, 15)]
 label_from_tick = lambda tick: pd.to_datetime(tick).strftime('%b %d')
